@@ -1,0 +1,66 @@
+{
+  "name": "okrs",
+  "author": "Morgan Intrator",
+  "version": "0.1.2",
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "watch": "tsc && vite build --watch",
+    "test": "vitest test",
+    "lint": "eslint ./src/**",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.cjs",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/index.mjs",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@morgs32/eslint-config": "^1.0.3",
+    "@size-limit/preset-small-lib": "^8.2.4",
+    "@types/jest": "^29.4.0",
+    "dts-bundle-generator": "^8.0.1",
+    "husky": "^8.0.3",
+    "react": "^18.2.0",
+    "size-limit": "^8.2.4",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9",
+    "vitest": "^0.32.0",
+    "zod": "^3.21.4"
+  },
+  "peerDependencies": {
+    "zod": "^3.21.4"
+  }
+}
