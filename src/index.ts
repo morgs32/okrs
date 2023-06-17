@@ -1,1 +1,1 @@
-export * as kr from './kr'
+export * as okrs from './okrs'

@@ -1,4 +1,4 @@
-import { Fail } from './kr';
+import { Fail } from './okrs';
 import {
   FailIssue,
   NotAPromise,

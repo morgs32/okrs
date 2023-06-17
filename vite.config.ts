@@ -18,4 +18,8 @@ module.exports = defineConfig({
       fileName: (format) => fileName[format],
     },
   },
+  test: {
+    include: ['**/*.test.ts'],
+    globals: true
+  },
 });

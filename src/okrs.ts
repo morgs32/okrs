@@ -105,7 +105,7 @@ export function handle(e: any, issues: Array<FailIssue> = []) {
 }
 
 
-export function props<T extends { [k: string]: Either<any> }>(props: T): Either<{
+export function props<T extends { [k: string]: Either }>(props: T): Either<{
   [K in keyof T]: T[K] extends Either<infer R> ? R : never
 }> {
   const results = {} as { [K in keyof T]: T[K] extends Either<infer R> ? R : never }
@@ -125,7 +125,7 @@ export function props<T extends { [k: string]: Either<any> }>(props: T): Either<
   return ok(results)
 }
 
-export function all<T extends Either<any>[]>(krs: T): Either<{ [P in keyof T]: T[P] extends Either<infer V> ? V : never }> {
+export function all<L extends Either[]>(krs: L): Either<{ [P in keyof L]: L[P] extends Either<infer V> ? V : never }> {
   const results: Array<any> = []
   let fails: Array<Fail> = []
   for (const kr of krs) {
@@ -139,5 +139,13 @@ export function all<T extends Either<any>[]>(krs: T): Either<{ [P in keyof T]: T
   if (fails.length > 0) {
     return handle(fails[0], fails.reduce((a, fail) => a.concat(fail.issues), [] as Array<FailIssue>))
   }
-  return ok(results as { [P in keyof T]: T[P] extends Either<infer V> ? V : never })
+  return ok(results as { [P in keyof L]: L[P] extends Either<infer V> ? V : never })
+}
+
+export async function mapAsync<T extends Either, I extends any>(items: Array<I>, func: (item: I) => PromiseLike<T>): Promise<Either<Array<T extends Either<infer V> ? V : never>>> {
+  return all(
+    await Promise.all(
+      items.map(func)
+    )
+  )
 }

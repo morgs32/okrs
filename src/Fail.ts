@@ -2,7 +2,7 @@ import {
   FailIssue, 
   Result 
 } from './types';
-import { Either, coerce } from './kr';
+import { Either, coerce } from './okrs';
 
 export interface FailJson {
   success: false

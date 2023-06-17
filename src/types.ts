@@ -1,4 +1,4 @@
-import { Fail } from './kr';
+import { Fail } from './okrs';
 import { Ok } from './Ok';
 
 export type NotAPromise<R> = R extends Promise<any> ? never : R
