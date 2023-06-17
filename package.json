@@ -19,8 +19,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
-    "watch": "tsc && vite build --watch",
+    "build": "rm -rf dist && tsc && vite build",
+    "watch": "tsc --watch",
     "test": "vitest test",
     "lint": "eslint ./src/**",
     "size": "size-limit",
@@ -51,7 +51,6 @@
     "@morgs32/eslint-config": "^1.0.3",
     "@size-limit/preset-small-lib": "^8.2.4",
     "@types/jest": "^29.4.0",
-    "dts-bundle-generator": "^8.0.1",
     "husky": "^8.0.3",
     "react": "^18.2.0",
     "size-limit": "^8.2.4",
