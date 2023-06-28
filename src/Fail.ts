@@ -17,18 +17,18 @@ export class Fail<L extends string = string> extends Error implements Result {
   public readonly value = null
 
   constructor(
-    public errorCode: L,
+    public code: L,
     public extra: Record<string, any> | null = null,
     public issues: Array<FailIssue> = [],
   ) {
-    super(extra ? `${errorCode} ${JSON.stringify(extra, null, 2)}` : errorCode)
+    super(extra ? `${code} \n${JSON.stringify(extra, null, 2)}` : code)
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
     Object.setPrototypeOf(this, Fail.prototype);
   }
 
   addExtra(extra: Record<string, any>): Fail<L> {
     const newFail = new Fail(
-      this.errorCode,
+      this.code,
       {
         ...this.extra,
         ...extra,
@@ -41,7 +41,7 @@ export class Fail<L extends string = string> extends Error implements Result {
 
   addPath(path: Array<string | number>): Fail<L> {
     const newFail = new Fail(
-      this.errorCode,
+      this.code,
       this.extra,
       this.issues.map((issue) => {
         return {
@@ -56,7 +56,7 @@ export class Fail<L extends string = string> extends Error implements Result {
 
   addIssues(issues: Array<FailIssue> = []): Fail<L> {
     const newFail = new Fail(
-      this.errorCode,
+      this.code,
       this.extra,
       [...this.issues, ...issues]
     )
@@ -72,7 +72,7 @@ export class Fail<L extends string = string> extends Error implements Result {
   makeJson(): FailJson {
     return {
       success: false,
-      code: this.errorCode,
+      code: this.code,
       extra: this.extra,
       issues: this.issues,
     }

@@ -18,6 +18,7 @@ module.exports = defineConfig({
       fileName: (format) => fileName[format],
     },
   },
+  // @ts-ignore
   test: {
     include: ['**/*.test.ts'],
     globals: true
