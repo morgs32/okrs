@@ -21,7 +21,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc && vite build",
     "watch": "tsc --watch",
-    "test": "vitest test",
+    "test": "vitest",
     "lint": "eslint ./src/**",
     "size": "size-limit",
     "analyze": "size-limit --why"
@@ -51,6 +51,7 @@
     "@morgs32/eslint-config": "^1.0.4",
     "@size-limit/preset-small-lib": "^8.2.4",
     "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.3",
     "husky": "^8.0.3",
     "react": "^18.2.0",
     "size-limit": "^8.2.4",

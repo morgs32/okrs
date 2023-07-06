@@ -1,21 +1,15 @@
-import { Fail } from './okrs';
-import { Ok } from './Ok';
+import { Fail, FailIssue } from './Fail'
 
-export type NotAPromise<R> = R extends Promise<any> ? never : R
+export interface Ok<R = any> {
+  success: true
+  code: null
+  value: R
+  warnings: Array<FailIssue>
+}
+
+export type MaybeEither<T> = Either<T> | T;
+export type NotAPromise<R> = R extends PromiseLike<any> ? never : R
 
 export type Resolveable<R> = R | Promise<R>
 
 export type Either<R = any, L extends string = string> = Fail<L> | Ok<R>
-
-export type FailIssue = {
-  message: string;
-  path: Array<string | number>;
-  received: any;
-}
-
-export interface Result<R = any> {
-  strict(): R
-  addPath(path: Array<string | number>): Either
-  addIssues(issues: Array<FailIssue>): Either
-  addExtra(extra: Record<string, any>): Either
-}
