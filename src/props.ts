@@ -1,5 +1,7 @@
 import { Fail, FailIssue } from './Fail';
-import { Either } from './types';
+import {
+  Either 
+} from './types';
 import { ok } from './ok';
 import { addPath } from './addPath';
 import { isPromiseLike } from './isPromiseLike';
@@ -23,15 +25,14 @@ export function props<T extends { [k: string]: Either } | { [k: string]: Either 
       results[key] = kr.value;
     }
   }
-  let isAsync = false
+  const promises: PromiseLike<any>[] = []
   for (const key in props) {
-    const kr = props[key];
-    if (isPromiseLike(kr)) {
-      isAsync = true
-      kr.then((v) => onSuccess(v, key))
+    const v = props[key]
+    if (isPromiseLike(v)) {
+      promises.push(v.then(v => onSuccess(v, key)))
     }
     else {
-      onSuccess(kr, key)
+      onSuccess(v, key)
     }
   }
   const onDone = () => {
@@ -40,8 +41,8 @@ export function props<T extends { [k: string]: Either } | { [k: string]: Either 
     }
     return ok(results);
   }
-  if (isAsync) {
-    return Promise.all(Object.values(props)).then(onDone)
+  if (promises.length) {
+    return Promise.all(promises).then(onDone)
   }
   return onDone()
 }
