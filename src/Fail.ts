@@ -30,7 +30,7 @@ export function fail<L extends string | 'fail'>(
 ) {
   return new Fail<typeof code>(
     code,
-    extra,
+    extra && JSON.parse(JSON.stringify(extra)),
     issues
   );
 }
