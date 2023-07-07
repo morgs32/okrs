@@ -7,5 +7,6 @@ export function ok<R>(value: R, warnings: Array<FailIssue> = []): Ok<R> {
     code: null,
     value,
     warnings,
+    _kr: 'ok',
   }
 }

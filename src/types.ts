@@ -5,6 +5,7 @@ export interface Ok<R = any> {
   code: null
   value: R
   warnings: Array<FailIssue>
+  _kr: 'ok'
 }
 
 export type MaybeEither<T> = Either<T> | T;

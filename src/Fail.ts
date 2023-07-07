@@ -8,6 +8,7 @@ export class Fail<L extends string = string> extends Error {
 
   public readonly success = false
   public readonly value = null
+  public readonly _kr = 'fail'
 
   constructor(
     public code: L,
