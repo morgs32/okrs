@@ -16,6 +16,7 @@ describe('all', () => {
     
     expect(kr).toMatchInlineSnapshot(`
       {
+        "_kr": "ok",
         "code": null,
         "success": true,
         "value": [
@@ -46,6 +47,7 @@ describe('all', () => {
     
     expect(kr).toMatchInlineSnapshot(`
       {
+        "_kr": "ok",
         "code": null,
         "success": true,
         "value": [

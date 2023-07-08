@@ -12,6 +12,7 @@ describe('props', () => {
     })
     expect(kr).toMatchInlineSnapshot(`
       {
+        "_kr": "ok",
         "code": null,
         "success": true,
         "value": {

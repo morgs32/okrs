@@ -8,6 +8,7 @@ describe('map', () => {
     const kr = map([1, 2], (a) => a)
     expect(kr).toMatchInlineSnapshot(`
       {
+        "_kr": "ok",
         "code": null,
         "success": true,
         "value": [
@@ -24,6 +25,7 @@ describe('map', () => {
     const kr = await map([1, 2], async (a) => a)
     expect(kr).toMatchInlineSnapshot(`
       {
+        "_kr": "ok",
         "code": null,
         "success": true,
         "value": [

@@ -8,8 +8,8 @@ import { isPromiseLike } from './isPromiseLike';
 // type MapExtractValue<T> = ;
 
 export function all<T extends Array<Either>>(list: T): Either<Array<T[number] extends Either<infer V> ? V : never>>
-export function all<T extends Array<PromiseLike<Either> | Either>> (list: T): PromiseLike<Either<Array<Awaited<T[number]> extends Either<infer V> ? V : never>>>
-export function all<T extends Array<Either> | Array<PromiseLike<Either> | Either>>(list: T): Either<Array<T[number] extends Either<infer V> ? V : never>> | PromiseLike<Either<Array<Awaited<T[number]> extends Either<infer V> ? V : never>>> {
+export function all<T extends Array<PromiseLike<Either> | Either>> (list: T): Promise<Either<Array<Awaited<T[number]> extends Either<infer V> ? V : never>>>
+export function all<T extends Array<Either> | Array<PromiseLike<Either> | Either>>(list: T): Either<Array<T[number] extends Either<infer V> ? V : never>> | Promise<Either<Array<Awaited<T[number]> extends Either<infer V> ? V : never>>> {
   const results: Array<any> = [];
   let fails: Array<Fail> = [];
   const onSuccess = (kr: Either) => {
@@ -23,7 +23,7 @@ export function all<T extends Array<Either> | Array<PromiseLike<Either> | Either
   const promises: PromiseLike<any>[] = []
   for (const v of list) {
     if (isPromiseLike(v)) {
-      promises.push(v.then(onSuccess, handle))
+      promises.push(v.then(v => Promise.resolve(onSuccess(v)), handle))
     }
     else {
       onSuccess(v)

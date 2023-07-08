@@ -7,9 +7,9 @@ import { isPromiseLike } from './isPromiseLike';
 import { coerce } from './coerce';
 import { all } from './all';
 
-export function map<T, I>(items: Array<I>, fnAsync: (item: I) => PromiseLike<MaybeEither<T>>): PromiseLike<Either<T[]>>;
+export function map<T, I>(items: Array<I>, fnAsync: (item: I) => PromiseLike<MaybeEither<T>>): Promise<Either<T[]>>;
 export function map<T, I>(items: Array<I>, fnSync: (item: I) => MaybeEither<NotAPromise<T>>): Either<T[]>;
-export function map<T, I>(items: Array<I>, fn: ((item: I) => MaybeEither<NotAPromise<T>>) | ((item: I) => PromiseLike<MaybeEither<T>>)): Either<T[]> | PromiseLike<Either<T[]>> {
+export function map<T, I>(items: Array<I>, fn: ((item: I) => MaybeEither<NotAPromise<T>>) | ((item: I) => Promise<MaybeEither<T>>)): Either<T[]> | Promise<Either<T[]>> {
   const x = items.map((item) => {
     const c = coerce(() => {
       const v = fn(item)
