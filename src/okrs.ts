@@ -1,5 +1,9 @@
 import { ok } from './ok'
-import { Either } from './types'
+import {
+  Either,
+  EitherValue,
+  Ok 
+} from './types'
 import { Fail, fail } from './Fail'
 import { _catch } from './catch'
 import { map } from './map'
@@ -28,4 +32,6 @@ export {
 
 export type { 
   Either,
+  EitherValue,
+  Ok,
 }
