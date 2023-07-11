@@ -16,7 +16,7 @@ export class Fail<L extends string = string> extends Error {
     public extra: {
       [key: string]: any
       status?: number
-    } | null = null,
+    } = {},
     public issues: Array<FailIssue> = [],
   ) {
     super(extra ? `${code} \n${JSON.stringify(extra, null, 2)}` : code)

@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "rm -rf dist && tsc && vite build",
+    "typecheck": "tsc",
     "watch": "tsc --watch",
     "test": "vitest",
     "lint": "eslint ./src/**",
