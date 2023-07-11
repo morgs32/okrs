@@ -14,6 +14,8 @@ import { handle } from './handle'
 import { coerce } from './coerce'
 import { strict } from './strict'
 import { addExtra } from './addExtra'
+import { res } from './res'
+import { zod } from './zod'
 
 export {
   ok,
@@ -27,6 +29,8 @@ export {
   props,
   coerce,
   Fail,
+  res,
+  zod,
   _catch as catch,
 }
 
