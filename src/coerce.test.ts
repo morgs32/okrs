@@ -1,4 +1,6 @@
+import { assert } from './assert';
 import { coerce } from './coerce';
+import { Either } from './types';
 
 
 
@@ -7,7 +9,7 @@ describe('coerce', () => {
     
     const a = coerce(() => 1)
 
-    const b = coerce(() => Promise.resolve(1))
+    const b = await coerce(() => Promise.resolve(1))
 
     const c = await coerce(() => {
       if (process.env.NODE_ENV === 'production') {
@@ -15,6 +17,54 @@ describe('coerce', () => {
       }
       return Promise.resolve(1)
     })
+    expect(a).toMatchInlineSnapshot(`
+      {
+        "_kr": "ok",
+        "code": null,
+        "success": true,
+        "value": 1,
+        "warnings": [],
+      }
+    `)
+    expect(b).toMatchInlineSnapshot(`
+      {
+        "_kr": "ok",
+        "code": null,
+        "success": true,
+        "value": 1,
+        "warnings": [],
+      }
+    `)
+    expect(c).toMatchInlineSnapshot(`
+      {
+        "_kr": "ok",
+        "code": null,
+        "success": true,
+        "value": 1,
+        "warnings": [],
+      }
+    `)
+
+  }); 
+  
+  it('with extra', async () => {
+    
+    const a = coerce(() => {
+      if (process.env.NODE_ENV === 'production') {
+        return 1
+      }
+      throw new Error('fail')
+    }, {
+      foo: 'bar'
+    })
+    assert<Either<number>>(a)
+
+    expect(a).toMatchInlineSnapshot(`
+      [Error: fail 
+      {
+        "foo": "bar"
+      }]
+    `)
 
   });
 });
