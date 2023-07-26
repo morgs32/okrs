@@ -1,13 +1,6 @@
 import { z } from 'zod';
 import { handle } from './handle';
 
-const zissues = z.array(z.object({
-  message: z.string(),
-  path: z.array(
-    z.union([z.string(), z.number()])
-  )
-}))
-
 const zfail = z.object({
   code: z.string(),
   success: z.literal(false),
@@ -15,7 +8,6 @@ const zfail = z.object({
   _kr: z.literal('fail'),
   status: z.number(),
   extra: z.any().nullable(),
-  issues: zissues
 })
 
 const zok = z.object({
@@ -23,7 +15,6 @@ const zok = z.object({
   success: z.literal(true),
   value: z.any(),
   _kr: z.literal('ok'),
-  warnings: zissues
 })
 
 export const zod = z.union([zfail, zok], {

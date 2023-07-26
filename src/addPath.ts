@@ -9,12 +9,6 @@ export function addPath<R, L extends string, E extends Either<R, L>>(kr: E, path
   const newFail = new Fail<L>(
     kr.code,
     kr.extra,
-    kr.issues.map((issue) => {
-      return {
-        ...issue,
-        path: [...path, ...issue.path],
-      };
-    })
   );
   newFail.stack = kr.stack?.replace(kr.message, newFail.message);
   return newFail as E

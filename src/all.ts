@@ -31,7 +31,7 @@ export function all<T extends Array<Either> | Array<PromiseLike<Either> | Either
   }
   const onDone = () => {
     if (fails.length > 0) {
-      return handle(fails[0], fails.reduce((a, fail) => a.concat(fail.issues), [] as Array<FailIssue>));
+      return handle(fails[0]);
     }
     return ok(results);
   }

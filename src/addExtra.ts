@@ -11,8 +11,7 @@ export function addExtra<R, L extends string>(kr: Either<R, L>, extra: Record<st
     {
       ...kr.extra,
       ...extra,
-    },
-    kr.issues
+    }
   );
   newFail.stack = kr.stack?.replace(kr.message, newFail.message);
   return newFail;

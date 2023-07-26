@@ -13,7 +13,6 @@
     "module": "./dist/index.esm.js",
     "require": "./dist/index.js"
   },
-  "private": true,
   "scripts": {
     "watch": "bunchee -w",
     "build": "bunchee",

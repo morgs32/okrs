@@ -1,4 +1,4 @@
-import { Fail, FailIssue } from './Fail';
+import { Fail } from './Fail';
 import {
   Either 
 } from './types';
@@ -37,7 +37,7 @@ export function props<T extends { [k: string]: Either } | { [k: string]: Either 
   }
   const onDone = () => {
     if (fails.length > 0) {
-      return handle(fails[0], fails.reduce((a, fail) => a.concat(fail.issues), [] as Array<FailIssue>));
+      return handle(fails[0])
     }
     return ok(results);
   }

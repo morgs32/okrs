@@ -1,4 +1,6 @@
+import { z } from 'zod';
 import { handle } from './handle';
+import { strict } from './strict';
 
 
 describe('handle', () => {
@@ -7,6 +9,7 @@ describe('handle', () => {
     const a = handle(new Error('fail'), {
       foo: 'bar'
     })
+    
     expect(a).toMatchInlineSnapshot(`
       [Error: fail 
       {
@@ -14,5 +17,21 @@ describe('handle', () => {
       }]
     `)
 
+  });
+
+  it('looking at logs', async () => {
+    let err
+    try {
+      strict(() => z.string({
+        invalid_type_error: 'x-lhc-workspace-key header is required',
+      }).parse(null))
+    }
+    catch (e) {
+      err = e
+    }
+    expect(err).toMatchInlineSnapshot(`
+      [Error: x-lhc-workspace-key header is required 
+      {}]
+    `)
   });
 });
