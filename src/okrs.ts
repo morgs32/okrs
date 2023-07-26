@@ -16,6 +16,7 @@ import { strict } from './strict'
 import { addExtra } from './addExtra'
 import { res } from './res'
 import { zod } from './zod'
+import { fromJson } from './fromJson'
 
 export {
   ok,
@@ -31,6 +32,7 @@ export {
   Fail,
   res,
   zod,
+  fromJson,
   _catch as catch,
 }
 

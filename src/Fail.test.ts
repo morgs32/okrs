@@ -1,4 +1,4 @@
-import { fail, isEmpty } from './Fail';
+import { fail } from './Fail';
 
 
 describe('Fail', () => {

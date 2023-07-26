@@ -15,6 +15,14 @@ describe('catch', () => {
     const b = _catch(a, () => {
       return 'foobar'
     })
+    expect(b).toMatchInlineSnapshot(`
+      {
+        "_kr": "ok",
+        "code": null,
+        "success": true,
+        "value": "foobar",
+      }
+    `)
 
   });
 });
