@@ -1,10 +1,9 @@
-import { Fail, FailIssue } from './Fail'
+import { Fail } from './Fail'
 
 export interface Ok<R = any> {
   success: true
   code: null
   value: R
-  warnings: Array<FailIssue>
   _kr: 'ok'
 }
 

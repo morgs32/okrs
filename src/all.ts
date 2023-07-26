@@ -1,4 +1,4 @@
-import { Fail, FailIssue } from './Fail';
+import { Fail } from './Fail';
 import { Either } from './types';
 import { handle } from './handle';
 import { ok } from './ok';

@@ -27,6 +27,7 @@ describe('handle', () => {
       }).parse(null))
     }
     catch (e) {
+      console.error(e)
       err = e
     }
     expect(err).toMatchInlineSnapshot(`
