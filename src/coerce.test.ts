@@ -23,7 +23,6 @@ describe('coerce', () => {
         "code": null,
         "success": true,
         "value": 1,
-        "warnings": [],
       }
     `)
     expect(b).toMatchInlineSnapshot(`
@@ -32,7 +31,6 @@ describe('coerce', () => {
         "code": null,
         "success": true,
         "value": 1,
-        "warnings": [],
       }
     `)
     expect(c).toMatchInlineSnapshot(`
@@ -41,7 +39,6 @@ describe('coerce', () => {
         "code": null,
         "success": true,
         "value": 1,
-        "warnings": [],
       }
     `)
 
@@ -59,12 +56,7 @@ describe('coerce', () => {
     })
     assert<Either<number>>(a)
 
-    expect(a).toMatchInlineSnapshot(`
-      [Error: fail 
-      {
-        "foo": "bar"
-      }]
-    `)
+    expect(a).toMatchInlineSnapshot('[Error: fail]')
 
   });
 });

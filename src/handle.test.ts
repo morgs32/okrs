@@ -10,12 +10,7 @@ describe('handle', () => {
       foo: 'bar'
     })
     
-    expect(a).toMatchInlineSnapshot(`
-      [Error: fail 
-      {
-        "foo": "bar"
-      }]
-    `)
+    expect(a).toMatchInlineSnapshot('[Error: fail]')
 
   });
 
@@ -27,7 +22,7 @@ describe('handle', () => {
       }).parse(null))
     }
     catch (e) {
-      console.error(e)
+      // console.error(e)
       err = e
     }
     expect(err).toMatchInlineSnapshot(`

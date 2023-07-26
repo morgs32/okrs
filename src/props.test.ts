@@ -21,7 +21,6 @@ describe('props', () => {
           "c": 1,
           "d": false,
         },
-        "warnings": [],
       }
     `)
   });  

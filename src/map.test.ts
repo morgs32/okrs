@@ -15,7 +15,6 @@ describe('map', () => {
           1,
           2,
         ],
-        "warnings": [],
       }
     `)
 
@@ -32,7 +31,6 @@ describe('map', () => {
           1,
           2,
         ],
-        "warnings": [],
       }
     `)
 

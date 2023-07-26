@@ -25,7 +25,6 @@ describe('all', () => {
           1,
           false,
         ],
-        "warnings": [],
       }
     `)
 
@@ -54,7 +53,6 @@ describe('all', () => {
           1,
           false,
         ],
-        "warnings": [],
       }
     `)
 
