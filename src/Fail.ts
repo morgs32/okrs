@@ -12,7 +12,7 @@ export class Fail<L extends string = string> extends Error {
       status?: number
     } = {},
   ) {
-    super(isEmpty(extra) ? code : `${code} \n${JSON.stringify(extra, null, 2)}`)
+    super(extra && Object.entries(extra).length ? `${code} \n${JSON.stringify(extra, null, 2)}` : code)
     this.status = extra?.status || 500
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
     Object.setPrototypeOf(this, Fail.prototype);
@@ -20,7 +20,7 @@ export class Fail<L extends string = string> extends Error {
 
 }
 
-function isEmpty(obj: any) {
+export function isEmpty(obj: any) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length
 }
 

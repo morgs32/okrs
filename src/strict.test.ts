@@ -25,7 +25,12 @@ describe('strict', () => {
         foo: 'bar'
       })
       assert<number>(b)
-    }).toThrowErrorMatchingInlineSnapshot('"foobar"')
+    }).toThrowErrorMatchingInlineSnapshot(`
+      "foobar 
+      {
+        \\"foo\\": \\"bar\\"
+      }"
+    `)
 
   });
 });

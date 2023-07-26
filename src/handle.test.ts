@@ -10,7 +10,12 @@ describe('handle', () => {
       foo: 'bar'
     })
     
-    expect(a).toMatchInlineSnapshot('[Error: fail]')
+    expect(a).toMatchInlineSnapshot(`
+      [Error: fail 
+      {
+        "foo": "bar"
+      }]
+    `)
 
   });
 
@@ -25,9 +30,6 @@ describe('handle', () => {
       // console.error(e)
       err = e
     }
-    expect(err).toMatchInlineSnapshot(`
-      [Error: x-lhc-workspace-key header is required 
-      {}]
-    `)
+    expect(err).toMatchInlineSnapshot('[Error: x-lhc-workspace-key header is required]')
   });
 });

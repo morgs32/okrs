@@ -56,7 +56,12 @@ describe('coerce', () => {
     })
     assert<Either<number>>(a)
 
-    expect(a).toMatchInlineSnapshot('[Error: fail]')
+    expect(a).toMatchInlineSnapshot(`
+      [Error: fail 
+      {
+        "foo": "bar"
+      }]
+    `)
 
   });
 });
