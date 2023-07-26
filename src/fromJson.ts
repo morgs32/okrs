@@ -1,5 +1,5 @@
-import { ok } from 'assert';
 import { fail } from './Fail';
+import { ok } from './ok';
 import { Either } from './types';
 
 
