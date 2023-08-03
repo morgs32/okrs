@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest",
+    "prepublish": "pnpm build",
     "clean": "rimraf dist"
   },
   "files": [
