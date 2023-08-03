@@ -17,7 +17,7 @@ const zok = z.object({
   _kr: z.literal('ok'),
 })
 
-export const zod = z.union([zfail, zok], {
+export const zeither = z.union([zfail, zok], {
   invalid_type_error: 'Invalid kr',
   description: 'Are you sure this was created with the okrs library?'
 })

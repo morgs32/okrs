@@ -15,7 +15,7 @@ import { coerce } from './coerce'
 import { strict } from './strict'
 import { addExtra } from './addExtra'
 import { res } from './res'
-import { zod } from './zod'
+import { zeither } from './zeither'
 import { fromJson } from './fromJson'
 
 export {
@@ -31,7 +31,7 @@ export {
   coerce,
   Fail,
   res,
-  zod,
+  zeither,
   fromJson,
   _catch as catch,
 }

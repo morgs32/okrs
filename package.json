@@ -38,7 +38,7 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
-    "@morgs32/eslint-config": "^1.0.4",
+    "@morgs32/eslint-config": "^2.0.8",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.3",
     "bunchee": "^3.5.0",
