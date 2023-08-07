@@ -2,18 +2,15 @@ import { all } from './all';
 import { ok } from './ok';
 import { Either } from './types';
 
-
-
 describe('all', () => {
   it('async', async () => {
-    
     const kr = await all([
       ok(1),
       ok(false),
       Promise.resolve(ok(1)),
       Promise.resolve(ok(false)),
-    ])
-    
+    ]);
+
     expect(kr).toMatchInlineSnapshot(`
       {
         "_kr": "ok",
@@ -26,24 +23,19 @@ describe('all', () => {
           false,
         ],
       }
-    `)
-
+    `);
   });
 
   it('sync', async () => {
-    
     function foobar<T>(v: T): Either<T> {
       if (process.env.FOOBAR) {
-        return ok(v)
+        return ok(v);
       }
-      return ok(v)
+      return ok(v);
     }
 
-    const kr = all([
-      foobar(1),
-      foobar(false),
-    ])
-    
+    const kr = all([foobar(1), foobar(false)]);
+
     expect(kr).toMatchInlineSnapshot(`
       {
         "_kr": "ok",
@@ -54,9 +46,6 @@ describe('all', () => {
           false,
         ],
       }
-    `)
-
+    `);
   });
 });
-
-

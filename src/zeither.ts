@@ -8,22 +8,23 @@ const zfail = z.object({
   _kr: z.literal('fail'),
   status: z.number(),
   extra: z.any().nullable(),
-})
+});
 
 const zok = z.object({
   code: z.null(),
   success: z.literal(true),
   value: z.any(),
   _kr: z.literal('ok'),
-})
+});
 
-export const zeither = z.union([zfail, zok], {
-  invalid_type_error: 'Invalid kr',
-  description: 'Are you sure this was created with the okrs library?'
-})
+export const zeither = z
+  .union([zfail, zok], {
+    invalid_type_error: 'Invalid kr',
+    description: 'Are you sure this was created with the okrs library?',
+  })
   .transform((val) => {
     if (!val.success) {
-      return handle(val)
+      return handle(val);
     }
-    return val
-  })
+    return val;
+  });

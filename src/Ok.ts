@@ -6,5 +6,5 @@ export function ok<R>(value: R): Ok<R> {
     code: null,
     value,
     _kr: 'ok',
-  }
+  };
 }

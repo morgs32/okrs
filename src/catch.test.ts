@@ -2,19 +2,17 @@ import { fail } from './Fail';
 import { _catch } from './catch';
 import { coerce } from './coerce';
 
-
 describe('catch', () => {
   it('works', async () => {
-    
     const a = coerce(() => {
       if (process.env.NODE_ENV === 'production') {
-        return 1
+        return 1;
       }
-      throw fail('foobar')
-    })
+      throw fail('foobar');
+    });
     const b = _catch(a, () => {
-      return 'foobar'
-    })
+      return 'foobar';
+    });
     expect(b).toMatchInlineSnapshot(`
       {
         "_kr": "ok",
@@ -22,7 +20,6 @@ describe('catch', () => {
         "success": true,
         "value": "foobar",
       }
-    `)
-
+    `);
   });
 });
