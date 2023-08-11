@@ -1,103 +1,178 @@
-# TSDX User Guide
+# okrs
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+## Background
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be published to NPM. If you’re looking to build a Node app, you could use `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+This is a "result class" library. It's for handling runtime errors gracefully without try-catch statementscommunicating .
 
-> If you’re new to TypeScript, checkout [this handy cheatsheet](https://devhints.io/typescript)
+Here's the pain:
 
-## Commands
+> **Do you ever find yourself wondering where exactly you should throw an error to be consumed by a try-catch? Do you sometimes end up having multiple layers of try-catch blocks? Should you just return null instead?**
+> — Khalil Stemmler (https://khalilstemmler.com/articles/enterprise-typescript-nodejs/handling-errors-result-class/)
 
-TSDX scaffolds your new library inside `/src`.
+See the whole article from Khalil for his version of a result class that can address the problem.
 
-To run TSDX, use:
+Also notice that programming languages like Elm guarantee no runtime exceptions with a similar pattern (https://guide.elm-lang.org/error_handling/).
 
-```bash
-npm start # or yarn start
+## Quickstart
+
+One of these:
+
+```
+pnpm add okrs // yarn add okrs // npm install okrs
 ```
 
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle Analysis
-
-[`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real cost of your library with `npm run size` and visualize the bundle with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
+Then 
+```
+import { okrs } from 'okrs'
 ```
 
-### Rollup
+### Instead of try/catch
 
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
+```
+const $kr = okrs.coerce(() => {
+  return mightFailFn() as string
+})
 
-### TypeScript
+if (!$kr.success) {
+  // Then handle error
+  return
+}
+const value = $kr.value  // This will be type "string" if we return in the if block
+```
 
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
+### Handle specific failures
 
-## Continuous Integration
+```
+function fragileFn(): okrs.Either<string, 'error-code-1' | 'error-code-2'> {
+  if (process.env.FOO === 1) {
+    return okrs.fail('error-code-1')
+  }
+  if (process.env.FOO === 2) {
+    return okrs.fail('error-code-2')
+  }
+  return okrs.ok('success')
+}
 
-### GitHub Actions
+function main() {
+  const $kr = fragileFn()
+  if (!$kr.success) {
+    switch ($kr.code) {
+      case 'error-code-1':
+        return 'fallback-1';
+      case 'error-code-2':
+        return 'fallback-2';
+      default:
+        throw $kr
+    }
+  }
+  return $kr.value
+}
 
-Two actions are added by default:
+```
 
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
+### Handle rejection(s) in list of promises
+How do you handle errors in `Promise.all`? You can't really. Read about the headache here:
+https://stackoverflow.com/questions/30362733/handling-errors-in-promise-all
 
-## Optimizations
+But with this utility it's easy:
+```
+const $kr = okrs.map([1, 2], async (num) => {
+  await sleep(num)
+  if (num % 2 === 1) {
+    throw new Error('1 is no good')
+  }
+  return num
+}) : Either<number[]>
+```
+It knows to wait until all the promises are resolved AND handles multiple failures.
 
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
+## `type Either<R, C> = Ok<R> | <Fail<C>`
 
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
+Your functions should return this type or `Promise<Either<T, C>>`. Then the implementation logic can discriminate 
+using `.success`:
+- If `.success` is false, then you have a `Fail<C>` object
+- If `.success` is true, then you have an `Ok<T>` object
 
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+## `type Ok<T>`
+```
+type Ok<R> {
+  success: true;
+  code: null;
+  value: R;
+}
+```
+## `type Fail<C>`
+```
+type Fail<C> {
+  success: false;
+  code: C;
+  value: null;
+  status: number
+  extra: any // See [extra](#extra)
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+## `okrs.ok(R): Ok<R>`
+This is how you return an `Ok` object.
 
-## Module Formats
+## `okrs.fail(C, Extra): Fail<C>`
+Call this to return a `Fail` object.
 
-CJS, ESModules, and UMD module formats are supported.
+## `okrs.map`
+This is the recommended way to map through a list and create a series of promises to run in parallel. This returns 
+a single `Either` or `Promise<Either>`. The `Ok` value will be the list of results if all promises resolve. If any 
+promise rejects than you'll get back a `Fail` with the first error code/message from the series.
+```
+const $kr = okrs.map([1, 2], async (num) => {
+  await sleep(num)
+  if (num % 2 === 1) {
+    throw new Error('1 is no good')
+  }
+  return num
+}) : Either<number[]>
+```
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+## `okrs.all`
+This 
 
-## Named Exports
+```
+const kr = await okrs.all([
+  ok(1),
+  ok(false),
+  Promise.resolve(ok(1)),
+  Promise.resolve(ok(false)),
+]): Promise<{
+  "success": true,
+  "value": [
+    1,
+    false,
+    1,
+    false,
+  ],
+}>
+```
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
+## `okrs.props(obj: Record<string, Either | Promise<Either>>)`
+- Like [`.all`](#okrsall) but for object properties instead of iterated values.
+- It can take async or syncrounous functions and return a Promise appropriately
+```
+const kr = await okrs.props({
+  a: ok(1),
+  b: ok(false),
+  c: sleep(1).then(() => ok(1)),
+  d: sleep(2).then(() => ok(false)),
+}): Promise<{
+  "success": true,
+  "value": {
+    "a": 1,
+    "b": false,
+    "c": 1,
+    "d": false,
+  }
+}>
+```
 
-## Including Styles
+## `okrs.strict<T>(() => T): T`
 
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+This will immediately invoke the function argument and throw if a `Fail` object is returned. It will also turn any 
+uncaught errors into `Fail` objects, before throwing those.
