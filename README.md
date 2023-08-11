@@ -1,4 +1,23 @@
-# okrs
+![okrs](okrs.png)
+
+
+- [Background](#background)
+- [Quickstart](#quickstart)
+  - [Instead of try/catch](#instead-of-trycatch)
+  - [Handle specific failures](#handle-specific-failures)
+  - [Handle rejection(s) in list of promises](#handle-rejections-in-list-of-promises)
+- [Types](#types)
+  - [`type Either<R, C> = Ok<R> | <Fail<C>`](#type-eitherr-c--okr--failc)
+  - [`type Ok<T>`](#type-okt)
+  - [`type Fail<C>`](#type-failc)
+- [Methods](#methods)
+  - [`okrs.ok(R): Ok<R>`](#okrsokr-okr)
+  - [`okrs.fail(C, Extra): Fail<C>`](#okrsfailc-extra-failc)
+  - [`okrs.map()`](#okrsmap)
+  - [`okrs.all()`](#okrsall)
+  - [`okrs.props()`](#okrsprops)
+  - [`okrs.strict()`](#okrsstrict)
+
 
 ## Background
 
@@ -86,14 +105,16 @@ const $kr = okrs.map([1, 2], async (num) => {
 ```
 It knows to wait until all the promises are resolved AND handles multiple failures.
 
-## `type Either<R, C> = Ok<R> | <Fail<C>`
+## Types
+
+### `type Either<R, C> = Ok<R> | <Fail<C>`
 
 Your functions should return this type or `Promise<Either<T, C>>`. Then the implementation logic can discriminate 
 using `.success`:
 - If `.success` is false, then you have a `Fail<C>` object
 - If `.success` is true, then you have an `Ok<T>` object
 
-## `type Ok<T>`
+### `type Ok<T>`
 ```
 type Ok<R> {
   success: true;
@@ -101,7 +122,7 @@ type Ok<R> {
   value: R;
 }
 ```
-## `type Fail<C>`
+### `type Fail<C>`
 ```
 type Fail<C> {
   success: false;
@@ -112,13 +133,15 @@ type Fail<C> {
 }
 ```
 
-## `okrs.ok(R): Ok<R>`
+## Methods
+
+### `okrs.ok(R): Ok<R>`
 This is how you return an `Ok` object.
 
-## `okrs.fail(C, Extra): Fail<C>`
+### `okrs.fail(C, Extra): Fail<C>`
 Call this to return a `Fail` object.
 
-## `okrs.map`
+### `okrs.map()`
 This is the recommended way to map through a list and create a series of promises to run in parallel. This returns 
 a single `Either` or `Promise<Either>`. The `Ok` value will be the list of results if all promises resolve. If any 
 promise rejects than you'll get back a `Fail` with the first error code/message from the series.
@@ -132,7 +155,7 @@ const $kr = okrs.map([1, 2], async (num) => {
 }) : Either<number[]>
 ```
 
-## `okrs.all`
+### `okrs.all()`
 This 
 
 ```
@@ -152,7 +175,7 @@ const kr = await okrs.all([
 }>
 ```
 
-## `okrs.props(obj: Record<string, Either | Promise<Either>>)`
+### `okrs.props()`
 - Like [`.all`](#okrsall) but for object properties instead of iterated values.
 - It can take async or syncrounous functions and return a Promise appropriately
 ```
@@ -172,7 +195,30 @@ const kr = await okrs.props({
 }>
 ```
 
-## `okrs.strict<T>(() => T): T`
+### `okrs.strict()`
 
 This will immediately invoke the function argument and throw if a `Fail` object is returned. It will also turn any 
 uncaught errors into `Fail` objects, before throwing those.
+
+```
+const b = strict(
+  () => {
+    if (!process.env.SOME_ENV) throw new Error('foobar');
+    return 1;
+  },
+  {
+    foo: 'bar',
+  }
+)
+```
+
+This will throw the following error:
+```
+Fail {
+  success: false
+  code: 'foobar',
+  extra; {
+    foo: 'bar'
+  }
+}
+```
