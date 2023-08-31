@@ -7,7 +7,10 @@ export interface IExtra {
   }>;
 }
 
-export class Fail<L extends string = string> extends Error {
+export class Fail<
+  L extends string = string,
+  R extends any = any,
+> extends Error {
   public readonly success = false;
   public readonly value = null;
   public readonly _kr = 'fail';
@@ -27,7 +30,7 @@ export class Fail<L extends string = string> extends Error {
     Object.setPrototypeOf(this, Fail.prototype);
   }
 
-  strict() {
+  strict(): R {
     // eslint-disable-next-line no-throw-literal
     throw this;
   }
