@@ -14,7 +14,14 @@ describe('props', () => {
       {
         "_kr": "ok",
         "code": null,
-       
+        "strict": [Function],
+        "success": true,
+        "value": {
+          "a": 1,
+          "b": false,
+          "c": 1,
+          "d": false,
+        },
       }
     `);
   });

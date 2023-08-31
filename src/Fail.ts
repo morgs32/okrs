@@ -26,6 +26,11 @@ export class Fail<L extends string = string> extends Error {
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
     Object.setPrototypeOf(this, Fail.prototype);
   }
+
+  strict() {
+    // eslint-disable-next-line no-throw-literal
+    throw this;
+  }
 }
 
 export function fail<L extends string | 'fail'>(

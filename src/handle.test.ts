@@ -31,7 +31,20 @@ describe('handle', () => {
       err = e;
     }
     expect(err).toMatchInlineSnapshot(
-      '[Error: x-lhc-workspace-key header is required]'
+      `
+      [Error: x-lhc-workspace-key header is required 
+      {
+        "issues": [
+          {
+            "code": "invalid_type",
+            "expected": "string",
+            "received": "null",
+            "path": [],
+            "message": "x-lhc-workspace-key header is required"
+          }
+        ]
+      }]
+    `
     );
   });
 });

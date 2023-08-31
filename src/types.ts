@@ -4,6 +4,7 @@ export interface Ok<R = any> {
   success: true;
   code: null;
   value: R;
+  strict: () => R;
   _kr: 'ok';
 }
 

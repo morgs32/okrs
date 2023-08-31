@@ -13,6 +13,7 @@ import { addExtra } from './addExtra';
 import { res } from './res';
 import { zeither } from './zeither';
 import { fromJson } from './fromJson';
+import { promise } from './promise';
 
 export {
   ok,
@@ -29,6 +30,7 @@ export {
   res,
   zeither,
   fromJson,
+  promise,
   _catch as catch,
 };
 
