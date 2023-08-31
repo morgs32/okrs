@@ -15,10 +15,11 @@ export class Fail<
   public readonly value = null;
   public readonly _kr = 'fail';
   public readonly status: number;
+  public readonly extra: IExtra;
 
   constructor(
     public readonly code: L,
-    public readonly extra?: IExtra | null
+    extra?: IExtra | null
   ) {
     super(
       extra && Object.entries(extra).length
@@ -26,6 +27,7 @@ export class Fail<
         : code
     );
     this.status = extra?.status || 500;
+    this.extra = extra || {};
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
     Object.setPrototypeOf(this, Fail.prototype);
   }
