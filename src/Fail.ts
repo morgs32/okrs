@@ -1,6 +1,7 @@
 export interface IExtra {
   [key: string]: any;
   status?: number;
+  feedback?: any;
   issues?: Array<{
     message: string;
     path: Array<string | number>;
@@ -16,6 +17,7 @@ export class Fail<
   public readonly _kr = 'fail';
   public readonly status: number;
   public readonly extra: IExtra;
+  public readonly feedback: any;
 
   constructor(
     public readonly code: L,
@@ -26,6 +28,7 @@ export class Fail<
         ? `${code} \n${JSON.stringify(extra, null, 2)}`
         : code
     );
+    this.feedback = extra?.feedback || null;
     this.status = extra?.status || 500;
     this.extra = extra || {};
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
