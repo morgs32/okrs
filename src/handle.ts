@@ -18,5 +18,5 @@ export function handle(e: any, extra: any = {}) {
     fail.stack = e.stack;
     return fail;
   }
-  return new Fail('fail');
+  return new Fail(e.message ?? e, extra);
 }

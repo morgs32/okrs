@@ -7,6 +7,7 @@ import { parse } from './parse';
 import { all } from './all';
 import { props } from './props';
 import { handle } from './handle';
+import { handleAll } from './handleAll';
 import { coerce } from './coerce';
 import { strict } from './strict';
 import { addExtra } from './addExtra';
@@ -23,6 +24,7 @@ export {
   strict,
   addExtra,
   handle,
+  handleAll,
   all,
   props,
   coerce,
