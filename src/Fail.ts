@@ -15,8 +15,8 @@ export class Fail<
   public readonly success = false;
   public readonly value = null;
   public readonly _kr = 'fail';
-  public readonly status: number;
   public readonly extra: IExtra;
+  public readonly status: number;
   public readonly feedback: any;
 
   constructor(

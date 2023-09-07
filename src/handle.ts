@@ -13,6 +13,13 @@ export function handle(e: any, extra: any = {}) {
     fail.stack = e.stack;
     return fail;
   }
+  if (e._kr === 'fail') {
+    const fail = e as Fail;
+    return new Fail(fail.message, {
+      ...fail.extra,
+      ...extra,
+    });
+  }
   if (e instanceof Error) {
     const fail = new Fail(e.message, extra);
     fail.stack = e.stack;
