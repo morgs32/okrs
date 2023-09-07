@@ -15,6 +15,7 @@ import { res } from './res';
 import { zeither } from './zeither';
 import { fromJson } from './fromJson';
 import { promise } from './promise';
+import { handleProps } from './handleProps';
 
 export {
   ok,
@@ -25,6 +26,7 @@ export {
   addExtra,
   handle,
   handleAll,
+  handleProps,
   all,
   props,
   coerce,
