@@ -1,7 +1,7 @@
 export interface IExtra {
   [key: string]: any;
   status?: number;
-  feedback?: any;
+  feedback?: string;
   issues?: Array<{
     message: string;
     path: Array<string | number>;
@@ -17,7 +17,7 @@ export class Fail<
   public readonly _kr = 'fail';
   public readonly extra: IExtra;
   public readonly status: number;
-  public readonly feedback: any;
+  public readonly feedback: string | null;
 
   constructor(
     public readonly code: L,
