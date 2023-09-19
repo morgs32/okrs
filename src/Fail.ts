@@ -33,6 +33,15 @@ export class Fail<
     this.extra = extra || {};
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
     Object.setPrototypeOf(this, Fail.prototype);
+    Object.defineProperties(this, {
+      success: { enumerable: false },
+      value: { enumerable: false },
+      _kr: { enumerable: false },
+      extra: { enumerable: false },
+      status: { enumerable: false },
+      feedback: { enumerable: false },
+      code: { enumerable: false },
+    });
   }
 
   strict(): R {
