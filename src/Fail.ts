@@ -25,7 +25,7 @@ export class Fail<
   ) {
     super(
       extra && Object.entries(extra).length
-        ? `${code} \n${JSON.stringify(extra, null, 2)}`
+        ? `${code} ${JSON.stringify(extra, null, 2)}`
         : code
     );
     this.feedback = extra?.feedback || null;
