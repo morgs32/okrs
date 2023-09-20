@@ -5,35 +5,22 @@ describe('strict', () => {
   it('works', async () => {
     const a = strict(() => 1);
     expect(a).toBe(1);
-    expect(() => {
-      const b = strict(
-        () => {
-          if (!process.env.SOME_ENV) throw new Error('foobar');
-          return 1;
-        },
-        {
-          foo: 'bar',
-        }
-      );
-      assert<number>(b);
-    }).toThrowError('foobar');
+    const b = strict(
+      () => {
+        if (!process.env.SOME_ENV) throw new Error('foobar');
+        return 1;
+      },
+      () => 2
+    );
+    assert<number>(b);
+    expect(b).toMatchInlineSnapshot('2');
 
     expect(() => {
-      const b = strict(
-        () => {
-          if (!process.env.SOME_ENV) throw new Error('foobar');
-          return 1;
-        },
-        {
-          foo: 'bar',
-        }
-      );
+      const b = strict(() => {
+        if (!process.env.SOME_ENV) throw new Error('foobar');
+        return 1;
+      });
       assert<number>(b);
-    }).toThrowErrorMatchingInlineSnapshot(`
-      "foobar 
-      {
-        \\"foo\\": \\"bar\\"
-      }"
-    `);
+    }).toThrowErrorMatchingInlineSnapshot('"foobar"');
   });
 });

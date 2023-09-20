@@ -58,8 +58,7 @@ describe('coerce', () => {
     assert<Either<number>>(a);
 
     expect(a).toMatchInlineSnapshot(`
-      [Error: fail 
-      {
+      [Error: fail {
         "foo": "bar"
       }]
     `);
