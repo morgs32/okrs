@@ -5,41 +5,50 @@ import { Fail } from './Fail';
 
 export function strict<T>(
   asyncBlock: () => PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T
+  cb?: (fail: Fail) => T | Fail
 ): Promise<T>;
 export function strict<T>(
   block: () => MaybeEither<NotAPromise<T>>,
-  cb?: (fail: Fail) => T
+  cb?: (fail: Fail) => T | Fail
 ): T;
 export function strict<T>(
   block: () => NotAnEither<NotAPromise<T>>,
-  cb?: (fail: Fail) => T
+  cb?: (fail: Fail) => T | Fail
 ): T;
 export function strict<T>(
   fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T
+  cb?: (fail: Fail) => T | Fail
 ): T | Promise<T>;
 export function strict<T>(
   fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T
+  cb?: (fail: Fail) => T | Fail
 ): T | Promise<T> {
-  const kr = coerce(fn);
-  if (isPromiseLike(kr)) {
-    return kr.then((awaitedKr) => {
-      if (awaitedKr.success) {
-        return awaitedKr.value;
+  const r1 = coerce(fn);
+  if (isPromiseLike(r1)) {
+    return r1.then((kr) => {
+      if (kr.success) {
+        return kr.value;
       }
       if (cb) {
-        return cb(awaitedKr);
+        const r2 = cb(kr);
+        if (r2 instanceof Fail) {
+          throw r2;
+        }
+        return r2;
       }
-      return awaitedKr.strict();
+      return kr.strict();
     });
   }
+  const kr = r1;
   if (kr.success) {
     return kr.value;
   }
   if (cb) {
-    return cb(kr);
+    const r2 = cb(kr);
+    if (r2 instanceof Fail) {
+      throw r2;
+    }
+    return r2;
   }
   return kr.strict();
 }
