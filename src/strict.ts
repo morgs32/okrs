@@ -6,7 +6,7 @@ import { Fail } from './Fail';
 export function strict<T>(
   asyncBlock: () => PromiseLike<MaybeEither<T>>,
   cb?: (fail: Fail) => T
-): PromiseLike<T>;
+): Promise<T>;
 export function strict<T>(
   block: () => MaybeEither<NotAPromise<T>>,
   cb?: (fail: Fail) => T
@@ -18,11 +18,11 @@ export function strict<T>(
 export function strict<T>(
   fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
   cb?: (fail: Fail) => T
-): T | PromiseLike<T>;
+): T | Promise<T>;
 export function strict<T>(
   fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
   cb?: (fail: Fail) => T
-): T | PromiseLike<T> {
+): T | Promise<T> {
   const kr = coerce(fn);
   if (isPromiseLike(kr)) {
     return kr.then((awaitedKr) => {
