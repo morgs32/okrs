@@ -3,7 +3,7 @@ import { Fail } from './Fail';
 
 export function handle(e: any, extra: any = {}) {
   if (e instanceof Fail) {
-    return e;
+    return new Fail(e.code, { ...e.extra, ...extra });
   }
   if (e instanceof z.ZodError) {
     const fail = new Fail(e.issues[0].message, {

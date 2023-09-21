@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { handle } from './handle';
 import { strict } from './strict';
+import { fail } from './Fail';
 
 describe('handle', () => {
   it('works', async () => {
@@ -11,6 +12,22 @@ describe('handle', () => {
     expect(a).toMatchInlineSnapshot(`
       [Error: fail {
         "foo": "bar"
+      }]
+    `);
+  });
+
+  it('with extra', async () => {
+    const f1 = fail('fail', {
+      a: 'a',
+    });
+    const f2 = handle(f1, {
+      b: 'b',
+    });
+
+    expect(f2).toMatchInlineSnapshot(`
+      [Error: fail {
+        "a": "a",
+        "b": "b"
       }]
     `);
   });
