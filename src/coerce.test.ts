@@ -1,4 +1,4 @@
-import { assert } from './assert';
+import { assert, Equals } from 'tsafe';
 import { coerce } from './coerce';
 import { Either } from './types';
 
@@ -55,7 +55,7 @@ describe('coerce', () => {
         foo: 'bar',
       }
     );
-    assert<Either<number>>(a);
+    assert<Equals<Either<number>, typeof a>>();
 
     expect(a).toMatchInlineSnapshot(`
       [Error: fail {

@@ -1,4 +1,4 @@
-import { assert } from './assert';
+import { assert, Equals } from 'tsafe';
 import { strict } from './strict';
 
 describe('strict', () => {
@@ -12,7 +12,7 @@ describe('strict', () => {
       },
       () => 2
     );
-    assert<number>(b);
+    assert<Equals<number, typeof b>>();
     expect(b).toMatchInlineSnapshot('2');
 
     expect(() => {
@@ -20,7 +20,7 @@ describe('strict', () => {
         if (!process.env.SOME_ENV) throw new Error('foobar');
         return 1;
       });
-      assert<number>(b);
+      assert<Equals<number, typeof b>>();
     }).toThrowErrorMatchingInlineSnapshot('"foobar"');
   });
 });
