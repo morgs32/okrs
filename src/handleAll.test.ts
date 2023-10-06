@@ -20,4 +20,10 @@ describe('handleAll', () => {
     const result = await handleAll([Promise.resolve(1), Promise.resolve(true)]);
     assert<Equals<typeof result, [number, boolean]>>();
   });
+
+  it('types an array correctly', async () => {
+    const promises = [1, 2].map((n) => Promise.resolve(n));
+    const result = await handleAll(promises);
+    assert<Equals<typeof result, number[]>>();
+  });
 });
