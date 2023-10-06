@@ -3,7 +3,9 @@ import { Fail } from './Fail';
 
 export function handle(e: any, extra: any = {}) {
   if (e instanceof Fail) {
-    return new Fail(e.code, { ...e.extra, ...extra });
+    const fail = new Fail(e.code, { ...e.extra, ...extra });
+    fail.stack = e.stack;
+    return fail;
   }
   if (e instanceof z.ZodError) {
     const fail = new Fail(e.issues[0].message, {
