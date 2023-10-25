@@ -8,10 +8,7 @@ export interface IExtra {
   }>;
 }
 
-export class Fail<
-  L extends string = string,
-  R extends any = any,
-> extends Error {
+export class Fail<L extends string = string> extends Error {
   public readonly success = false;
   public readonly value = null;
   public readonly _kr = 'fail';
@@ -42,11 +39,6 @@ export class Fail<
       feedback: { enumerable: false },
       code: { enumerable: false },
     });
-  }
-
-  strict(): R {
-    // eslint-disable-next-line no-throw-literal
-    throw this;
   }
 }
 

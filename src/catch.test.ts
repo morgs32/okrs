@@ -17,7 +17,6 @@ describe('catch', () => {
       {
         "_kr": "ok",
         "code": null,
-        "strict": [Function],
         "success": true,
         "value": "foobar",
       }

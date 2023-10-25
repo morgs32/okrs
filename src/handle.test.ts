@@ -8,7 +8,6 @@ describe('handle', () => {
     const a = handle(new Error('fail'), {
       foo: 'bar',
     });
-
     expect(a).toMatchInlineSnapshot(`
       [Error: fail {
         "foo": "bar"
@@ -26,8 +25,7 @@ describe('handle', () => {
 
     expect(f2).toMatchInlineSnapshot(`
       [Error: fail {
-        "a": "a",
-        "b": "b"
+        "a": "a"
       }]
     `);
   });

@@ -6,7 +6,6 @@ describe('okrs', () => {
     const kr = await okrs.map(items, async (item) => okrs.ok(item + 1));
     expect(kr).toEqual({
       ...okrs.ok([2, 3, 4]),
-      strict: expect.any(Function),
     });
   });
 

@@ -5,7 +5,6 @@ export function ok<R>(value: R): Ok<R> {
     success: true,
     code: null,
     value,
-    strict: () => value,
     _kr: 'ok',
   };
 }

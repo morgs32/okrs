@@ -15,7 +15,6 @@ describe('all', () => {
       {
         "_kr": "ok",
         "code": null,
-        "strict": [Function],
         "success": true,
         "value": [
           1,
@@ -41,7 +40,6 @@ describe('all', () => {
       {
         "_kr": "ok",
         "code": null,
-        "strict": [Function],
         "success": true,
         "value": [
           1,

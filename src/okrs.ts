@@ -16,6 +16,7 @@ import { zeither } from './zeither';
 import { fromJson } from './fromJson';
 import { promise } from './promise';
 import { handleProps } from './handleProps';
+import { json } from './json';
 
 export {
   ok,
@@ -35,6 +36,7 @@ export {
   zeither,
   fromJson,
   promise,
+  json,
   _catch as catch,
 };
 

@@ -3,21 +3,20 @@ import { Fail } from './Fail';
 
 export function handle(e: any, extra: any = {}) {
   if (e instanceof Fail) {
-    const fail = new Fail(e.code, { ...e.extra, ...extra });
-    fail.stack = e.stack;
-    return fail;
+    return e;
   }
   if (e instanceof z.ZodError) {
     const fail = new Fail(e.issues[0].message, {
       ...extra,
       issues: [...e.issues, ...(extra.issues ?? [])],
     });
-    fail.stack = e.stack;
+    fail.stack = e.stack?.replace(e.message, fail.message);
     return fail;
   }
   if (e instanceof Error) {
     const fail = new Fail(e.message, extra);
     fail.stack = e.stack;
+    fail.stack = e.stack?.replace(e.message, fail.message);
     return fail;
   }
   return new Fail(e.message ?? e, extra);

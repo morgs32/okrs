@@ -2,6 +2,7 @@ import { MaybeEither, NotAPromise, NotAnEither } from './types';
 import { isPromiseLike } from './isPromiseLike';
 import { coerce } from './coerce';
 import { Fail } from './Fail';
+import { parse } from './parse';
 
 export function strict<T>(
   asyncBlock: () => PromiseLike<MaybeEither<T>>,
@@ -36,7 +37,7 @@ export function strict<T>(
         }
         return r2;
       }
-      return kr.strict();
+      return parse(kr);
     });
   }
   const kr = r1;
@@ -50,5 +51,5 @@ export function strict<T>(
     }
     return r2;
   }
-  return kr.strict();
+  return parse(kr);
 }

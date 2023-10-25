@@ -14,7 +14,6 @@ describe('props', () => {
       {
         "_kr": "ok",
         "code": null,
-        "strict": [Function],
         "success": true,
         "value": {
           "a": 1,
