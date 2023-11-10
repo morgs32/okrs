@@ -1,51 +1,29 @@
 import { all } from './all';
-import { ok } from './ok';
-import { Either } from './types';
+import { assert, Equals } from 'tsafe';
 
 describe('all', () => {
-  it('async', async () => {
-    const kr = await all([
-      ok(1),
-      ok(false),
-      Promise.resolve(ok(1)),
-      Promise.resolve(ok(false)),
-    ]);
+  it('works', async () => {
+    await expect(() => {
+      return all([Promise.resolve(1), Promise.reject(2)]);
+    }).rejects.toThrowErrorMatchingInlineSnapshot('"2"');
 
-    expect(kr).toMatchInlineSnapshot(`
-      {
-        "_kr": "ok",
-        "code": null,
-        "success": true,
-        "value": [
-          1,
-          false,
-          1,
-          false,
-        ],
-      }
+    const result = await all([Promise.resolve(1), Promise.resolve(2)]);
+    expect(result).toMatchInlineSnapshot(`
+      [
+        1,
+        2,
+      ]
     `);
   });
 
-  it('sync', async () => {
-    function foobar<T>(v: T): Either<T> {
-      if (process.env.FOOBAR) {
-        return ok(v);
-      }
-      return ok(v);
-    }
+  it('types a tuple correctly', async () => {
+    const result = await all([Promise.resolve(1), Promise.resolve(true)]);
+    assert<Equals<typeof result, [number, boolean]>>();
+  });
 
-    const kr = all([foobar(1), foobar(false)]);
-
-    expect(kr).toMatchInlineSnapshot(`
-      {
-        "_kr": "ok",
-        "code": null,
-        "success": true,
-        "value": [
-          1,
-          false,
-        ],
-      }
-    `);
+  it('types an array correctly', async () => {
+    const promises = [1, 2].map((n) => Promise.resolve(n));
+    const result = await all(promises);
+    assert<Equals<typeof result, number[]>>();
   });
 });

@@ -1,27 +1,29 @@
-import { ok } from './ok';
-import { props } from './props';
-import { sleep } from './utils/sleep';
+import { okrs } from '.';
 
 describe('props', () => {
   it('works', async () => {
-    const kr = await props({
-      a: ok(1),
-      b: ok(false),
-      c: sleep(1).then(() => ok(1)),
-      d: sleep(2).then(() => ok(false)),
-    });
-    expect(kr).toMatchInlineSnapshot(`
+    const props = {
+      a: Promise.resolve(1),
+      b: Promise.resolve(2),
+    };
+
+    const result = await okrs.props(props);
+    expect(result).toMatchInlineSnapshot(`
       {
-        "_kr": "ok",
-        "code": null,
-        "success": true,
-        "value": {
-          "a": 1,
-          "b": false,
-          "c": 1,
-          "d": false,
-        },
+        "a": 1,
+        "b": 2,
       }
     `);
+  });
+
+  it('throws', async () => {
+    const props = {
+      a: Promise.resolve(1),
+      b: Promise.reject(2),
+    };
+
+    await expect(() => {
+      return okrs.props(props);
+    }).rejects.toThrowErrorMatchingInlineSnapshot('"2"');
   });
 });

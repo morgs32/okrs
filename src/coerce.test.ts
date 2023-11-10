@@ -8,11 +8,11 @@ describe('coerce', () => {
 
     const b = await coerce(() => Promise.resolve(1));
 
-    const c = await coerce(() => {
+    const c = await coerce(async () => {
       if (process.env.NODE_ENV === 'production') {
         return 1;
       }
-      return Promise.resolve(1);
+      return 1;
     });
     expect(a).toMatchInlineSnapshot(`
       {

@@ -1,55 +1,31 @@
-import { MaybeEither, NotAPromise, NotAnEither } from './types';
+import { NotAPromise, NotAnEither } from './types';
 import { isPromiseLike } from './isPromiseLike';
-import { coerce } from './coerce';
-import { Fail } from './Fail';
-import { parse } from './parse';
+import { okrs } from '.';
 
 export function strict<T>(
-  asyncBlock: () => PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T | Fail
+  fn: () => PromiseLike<NotAnEither<T>>,
+  extra?: Record<string, unknown>
 ): Promise<T>;
 export function strict<T>(
-  block: () => MaybeEither<NotAPromise<T>>,
-  cb?: (fail: Fail) => T | Fail
+  fn: () => NotAPromise<NotAnEither<T>>,
+  extra?: Record<string, unknown>
 ): T;
 export function strict<T>(
-  block: () => NotAnEither<NotAPromise<T>>,
-  cb?: (fail: Fail) => T | Fail
-): T;
-export function strict<T>(
-  fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T | Fail
-): T | Promise<T>;
-export function strict<T>(
-  fn: () => MaybeEither<NotAPromise<T>> | PromiseLike<MaybeEither<T>>,
-  cb?: (fail: Fail) => T | Fail
+  fn: () => NotAPromise<NotAnEither<T>> | PromiseLike<NotAnEither<T>>,
+  extra?: Record<string, unknown>
 ): T | Promise<T> {
-  const r1 = coerce(fn);
-  if (isPromiseLike(r1)) {
-    return r1.then((kr) => {
-      if (kr.success) {
-        return kr.value;
-      }
-      if (cb) {
-        const r2 = cb(kr);
-        if (r2 instanceof Fail) {
-          throw r2;
+  try {
+    const v = fn();
+    if (isPromiseLike(v)) {
+      return v.then(
+        (v) => Promise.resolve(v),
+        (e) => {
+          throw okrs.handle(e, extra);
         }
-        return r2;
-      }
-      return parse(kr);
-    });
-  }
-  const kr = r1;
-  if (kr.success) {
-    return kr.value;
-  }
-  if (cb) {
-    const r2 = cb(kr);
-    if (r2 instanceof Fail) {
-      throw r2;
+      ) as Promise<T>;
     }
-    return r2;
+    return v;
+  } catch (e) {
+    throw okrs.handle(e, extra);
   }
-  return parse(kr);
 }

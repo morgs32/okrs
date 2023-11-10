@@ -1,58 +1,28 @@
-import { Fail } from './Fail';
-import { Either } from './types';
-import { ok } from './ok';
-import { addPath } from './addPath';
-import { isPromiseLike } from './isPromiseLike';
 import { handle } from './handle';
+import { Fail } from './Fail';
 
-type ExtractValue<T> = T extends Either<infer V>
-  ? V
-  : T extends PromiseLike<Either<infer V>>
-  ? V
-  : never;
-type MapExtractValue<T> = { [K in keyof T]: ExtractValue<T[K]> };
-
-export function props<T extends { [k: string]: Either | PromiseLike<Either> }>(
-  props: T
-): PromiseLike<Either<MapExtractValue<T>>>;
-export function props<T extends { [k: string]: Either }>(
-  props: T
-): Either<MapExtractValue<T>>;
-export function props<
-  T extends
-    | { [k: string]: Either }
-    | { [k: string]: Either | PromiseLike<Either> },
->(
-  props: T
-): Either<MapExtractValue<T>> | PromiseLike<Either<MapExtractValue<T>>> {
+export async function props<T extends { [k: string]: Promise<any> }>(props: T) {
   const results = {} as {
-    [K in keyof T]: T[K] extends Either<infer R> ? R : never;
+    [K in keyof T]: T[K] extends Promise<infer R> ? R : never;
   };
-  let fails: Array<Fail> = [];
-  const onSuccess = (kr: Either, key: keyof T) => {
-    if (!kr.success) {
-      fails.push(addPath(kr, [key as string]));
-    } else {
-      results[key] = kr.value;
-    }
-  };
-  const promises: PromiseLike<any>[] = [];
+  const promises: Promise<any>[] = [];
+  let fail: Fail | undefined;
   for (const key in props) {
-    const v = props[key];
-    if (isPromiseLike(v)) {
-      promises.push(v.then((v) => onSuccess(v, key)));
-    } else {
-      onSuccess(v, key);
-    }
+    promises.push(
+      // eslint-disable-next-line no-loop-func
+      props[key as keyof T].catch(handle).then((v) => {
+        if (v instanceof Fail && !fail) {
+          fail = v;
+        }
+        results[key] = v;
+      })
+    );
   }
-  const onDone = () => {
-    if (fails.length > 0) {
-      return handle(fails[0]);
-    }
-    return ok(results);
-  };
   if (promises.length) {
-    return Promise.all(promises).then(onDone);
+    await Promise.all(promises);
   }
-  return onDone();
+  if (fail) {
+    throw fail;
+  }
+  return results;
 }
