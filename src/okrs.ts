@@ -1,4 +1,5 @@
 import { ok } from './ok';
+import { batch } from './batch';
 import { Either, EitherValue, Ok } from './types';
 import { Fail, fail } from './Fail';
 import { parse } from './parse';
@@ -16,6 +17,7 @@ import { json } from './json';
 
 export {
   ok,
+  batch,
   fail,
   parse,
   strict,
