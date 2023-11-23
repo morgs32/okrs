@@ -40,6 +40,24 @@ export class Fail<L extends string = string> extends Error {
       code: { enumerable: false },
     });
   }
+
+  toJSON(): {
+    [key in Exclude<keyof Fail<L>, 'toJSON'>]: Fail<L>[key];
+  } {
+    return {
+      _kr: this._kr,
+      name: this.name,
+      cause: this.cause,
+      code: this.code,
+      extra: this.extra,
+      feedback: this.feedback,
+      message: this.message,
+      stack: this.stack,
+      status: this.status,
+      success: this.success,
+      value: this.value,
+    };
+  }
 }
 
 export function fail<L extends string | 'fail'>(

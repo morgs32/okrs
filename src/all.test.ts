@@ -17,8 +17,13 @@ describe('all', () => {
   });
 
   it('types a tuple correctly', async () => {
-    const result = await all([Promise.resolve(1), Promise.resolve(true)]);
-    assert<Equals<typeof result, [number, boolean]>>();
+    const result = await all([
+      Promise.resolve(1),
+      Promise.resolve('string'),
+      Promise.resolve(1),
+      Promise.resolve(true),
+    ]);
+    assert<Equals<typeof result, [number, string, number, boolean]>>();
   });
 
   it('types an array correctly', async () => {
