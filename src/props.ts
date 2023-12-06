@@ -1,6 +1,5 @@
-import { handle } from './handle';
-import { Fail } from './Fail';
 import { isPromise } from 'util/types';
+import { okrs } from '.';
 
 export async function props<T>(props: T) {
   const results = {} as {
@@ -12,11 +11,12 @@ export async function props<T>(props: T) {
     if (!isPromise(value)) {
       continue;
     }
-    const promise = value.catch(handle).then((v) => {
+    const promise = value.then((v: any) => {
       results[key] = v;
     });
     promises.push(promise);
   }
-
-  return results;
+  return okrs.all(promises).then(() => {
+    return results;
+  });
 }
