@@ -1,14 +1,14 @@
-import { isPromise } from 'util/types';
 import { okrs } from '.';
+import { isPromiseLike } from './isPromiseLike';
 
 export async function props<T>(props: T) {
   const results = {} as {
     [K in keyof T]: T[K] extends Promise<infer R> ? R : never;
   };
-  const promises: Promise<any>[] = [];
+  const promises: PromiseLike<any>[] = [];
   for (const key in props) {
     let value: any = props[key];
-    if (!isPromise(value)) {
+    if (!isPromiseLike(value)) {
       continue;
     }
     const promise = value.then((v: any) => {
