@@ -9,11 +9,11 @@ import { all } from './all';
 import { coerce } from './coerce';
 import { strict } from './strict';
 import { addExtra } from './addExtra';
-import { res } from './res';
 import { zeither } from './zeither';
 import { fromJson } from './fromJson';
 import { promise } from './promise';
 import { json } from './json';
+import { wrap } from './wrap';
 
 export {
   ok,
@@ -27,11 +27,11 @@ export {
   props,
   coerce,
   Fail,
-  res,
   zeither,
   fromJson,
   promise,
   json,
+  wrap,
 };
 
 export type { Either, EitherValue, Ok };
