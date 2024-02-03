@@ -1,12 +1,12 @@
 import { Equals, assert } from 'tsafe';
 import { okrs } from '.';
-import { JsonFail, Ok } from './types';
+import { IFail, Ok } from './types';
 
-describe('json', () => {
+describe('jsonify', () => {
   it('works', async () => {
     const ok = okrs.ok('ok');
     const fail = okrs.fail('fail');
-    const fails: JsonFail[] = [];
+    const fails: IFail[] = [];
     fails.push(fail);
 
     expect(JSON.stringify(fail, null, 2)).toMatchInlineSnapshot(`
@@ -17,14 +17,14 @@ describe('json', () => {
         \\"extra\\": {},
         \\"feedback\\": null,
         \\"message\\": \\"fail\\",
-        \\"stack\\": \\"Error: fail\\\\n    at Module.fail (/Users/morgs32/GitHub/okrs/src/Fail.ts:67:10)\\\\n    at /Users/morgs32/GitHub/okrs/src/json.test.ts:8:23\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:138:13\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:41:26\\\\n    at runTest (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:486:17)\\\\n    at runSuite (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:594:15)\\\\n    at runSuite (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:594:15)\\\\n    at runFiles (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:645:5)\\\\n    at startTests (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:654:3)\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/vitest@0.32.2/node_modules/vitest/dist/entry.js:278:7\\",
+        \\"stack\\": \\"Error: fail\\\\n    at Module.fail (/Users/morgs32/GitHub/okrs/src/Fail.ts:67:10)\\\\n    at /Users/morgs32/GitHub/okrs/src/jsonify.test.ts:8:23\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:138:13\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:41:26\\\\n    at runTest (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:486:17)\\\\n    at runSuite (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:594:15)\\\\n    at runSuite (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:594:15)\\\\n    at runFiles (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:645:5)\\\\n    at startTests (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:654:3)\\\\n    at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/vitest@0.32.2/node_modules/vitest/dist/entry.js:278:7\\",
         \\"status\\": 500,
         \\"success\\": false,
         \\"value\\": null
       }"
     `);
 
-    const ok1 = okrs.json(ok);
+    const ok1 = okrs.jsonify(ok);
     if (ok1.success) {
       assert<Equals<typeof ok1, Ok<string>>>();
     }
@@ -39,7 +39,7 @@ describe('json', () => {
         "value": "ok",
       }
     `);
-    expect(okrs.json(fail)).toMatchInlineSnapshot(`
+    expect(okrs.jsonify(fail)).toMatchInlineSnapshot(`
       {
         "_kr": "fail",
         "code": "fail",
@@ -48,7 +48,7 @@ describe('json', () => {
         "message": "fail",
         "stack": "Error: fail
           at Module.fail (/Users/morgs32/GitHub/okrs/src/Fail.ts:67:10)
-          at /Users/morgs32/GitHub/okrs/src/json.test.ts:8:23
+          at /Users/morgs32/GitHub/okrs/src/jsonify.test.ts:8:23
           at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:138:13
           at file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:41:26
           at runTest (file:///Users/morgs32/GitHub/okrs/node_modules/.pnpm/@vitest+runner@0.32.2/node_modules/@vitest/runner/dist/index.js:486:17)

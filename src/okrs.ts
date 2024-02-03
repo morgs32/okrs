@@ -9,11 +9,9 @@ import { all } from './all';
 import { coerce } from './coerce';
 import { strict } from './strict';
 import { addExtra } from './addExtra';
-import { zeither } from './zeither';
-import { fromJson } from './fromJson';
 import { promise } from './promise';
-import { json } from './json';
 import { wrap } from './wrap';
+import { jsonify } from './jsonify';
 
 export {
   ok,
@@ -27,10 +25,8 @@ export {
   props,
   coerce,
   Fail,
-  zeither,
-  fromJson,
   promise,
-  json,
+  jsonify,
   wrap,
 };
 

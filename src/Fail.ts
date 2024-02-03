@@ -8,7 +8,20 @@ export interface IExtra {
   }>;
 }
 
-export class Fail<L extends string = string> extends Error {
+export interface IFail<L extends string = string> {
+  success: false;
+  value: null;
+  _kr: 'fail';
+  extra: IExtra;
+  status: number;
+  feedback: string | null;
+  code: L;
+}
+
+export class Fail<L extends string = string>
+  extends Error
+  implements Readonly<IFail<L>>
+{
   public readonly success = false;
   public readonly value = null;
   public readonly _kr = 'fail';
@@ -39,24 +52,6 @@ export class Fail<L extends string = string> extends Error {
       feedback: { enumerable: false },
       code: { enumerable: false },
     });
-  }
-
-  toJSON(): {
-    [key in Exclude<keyof Fail<L>, 'toJSON'>]: Fail<L>[key];
-  } {
-    return {
-      _kr: this._kr,
-      name: this.name,
-      cause: this.cause,
-      code: this.code,
-      extra: this.extra,
-      feedback: this.feedback,
-      message: this.message,
-      stack: this.stack,
-      status: this.status,
-      success: this.success,
-      value: this.value,
-    };
   }
 }
 
