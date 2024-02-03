@@ -1,6 +1,5 @@
 import { ok } from "./ok"
 import { batch } from "./batch"
-import { Either, EitherValue, Ok } from "./types"
 import { Fail, fail } from "./Fail"
 import { parse } from "./parse"
 import { props } from "./props"
@@ -30,4 +29,4 @@ export {
   wrap,
 }
 
-export type { Either, EitherValue, Ok }
+export type * from "./types"
