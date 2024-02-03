@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@morgs32/eslint-config'],
-};
+  extends: ["@morgs32/eslint-config"],
+}

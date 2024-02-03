@@ -1,1 +1,1 @@
-export * as okrs from './okrs';
+export * as okrs from "./okrs"

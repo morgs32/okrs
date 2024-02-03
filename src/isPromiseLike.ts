@@ -8,7 +8,7 @@
 export function isPromiseLike(v: unknown): v is PromiseLike<unknown> {
   return (
     !!v &&
-    (typeof v === 'object' || typeof v === 'function') &&
-    typeof (v as any).then === 'function'
-  );
+    (typeof v === "object" || typeof v === "function") &&
+    typeof (v as any).then === "function"
+  )
 }

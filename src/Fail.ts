@@ -1,48 +1,48 @@
 export interface IExtra {
-  [key: string]: any;
-  status?: number;
-  feedback?: string;
+  [key: string]: any
+  status?: number
+  feedback?: string
   issues?: Array<{
-    message: string;
-    path: Array<string | number>;
-  }>;
+    message: string
+    path: Array<string | number>
+  }>
 }
 
 export interface IFail<L extends string = string> {
-  success: false;
-  value: null;
-  _kr: 'fail';
-  extra: IExtra;
-  status: number;
-  feedback: string | null;
-  code: L;
+  success: false
+  value: null
+  _kr: "fail"
+  extra: IExtra
+  status: number
+  feedback: string | null
+  code: L
 }
 
 export class Fail<L extends string = string>
   extends Error
   implements Readonly<IFail<L>>
 {
-  public readonly success = false;
-  public readonly value = null;
-  public readonly _kr = 'fail';
-  public readonly extra: IExtra;
-  public readonly status: number;
-  public readonly feedback: string | null;
+  public readonly success = false
+  public readonly value = null
+  public readonly _kr = "fail"
+  public readonly extra: IExtra
+  public readonly status: number
+  public readonly feedback: string | null
 
   constructor(
     public readonly code: L,
-    extra?: IExtra | null
+    extra?: IExtra | null,
   ) {
     super(
       extra && Object.entries(extra).length
         ? `${code} ${JSON.stringify(extra, null, 2)}`
-        : code
-    );
-    this.feedback = extra?.feedback || null;
-    this.status = extra?.status || 500;
-    this.extra = extra || {};
+        : code,
+    )
+    this.feedback = extra?.feedback || null
+    this.status = extra?.status || 500
+    this.extra = extra || {}
     // Known issue: https://github.com/microsoft/TypeScript/issues/13965
-    Object.setPrototypeOf(this, Fail.prototype);
+    Object.setPrototypeOf(this, Fail.prototype)
     Object.defineProperties(this, {
       success: { enumerable: false },
       value: { enumerable: false },
@@ -51,16 +51,16 @@ export class Fail<L extends string = string>
       status: { enumerable: false },
       feedback: { enumerable: false },
       code: { enumerable: false },
-    });
+    })
   }
 }
 
-export function fail<L extends string | 'fail'>(
-  code: L = 'fail' as L,
-  extra?: IExtra | null
+export function fail<L extends string | "fail">(
+  code: L = "fail" as L,
+  extra?: IExtra | null,
 ) {
   return new Fail<typeof code>(
     code,
-    extra && (JSON.parse(JSON.stringify(extra)) as IExtra)
-  );
+    extra && (JSON.parse(JSON.stringify(extra)) as IExtra),
+  )
 }

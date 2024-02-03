@@ -1,9 +1,9 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config"
 
 module.exports = defineConfig({
-  base: './',
+  base: "./",
   test: {
-    include: ['**/*.test.ts'],
+    include: ["**/*.test.ts"],
     globals: true,
   },
-});
+})

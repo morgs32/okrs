@@ -1,13 +1,13 @@
-import { Equals, assert } from 'tsafe';
-import { okrs } from '.';
-import { IFail, Ok } from './types';
+import { Equals, assert } from "tsafe"
+import { okrs } from "."
+import { IFail, Ok } from "./types"
 
-describe('jsonify', () => {
-  it('works', async () => {
-    const ok = okrs.ok('ok');
-    const fail = okrs.fail('fail');
-    const fails: IFail[] = [];
-    fails.push(fail);
+describe("jsonify", () => {
+  it("works", async () => {
+    const ok = okrs.ok("ok")
+    const fail = okrs.fail("fail")
+    const fails: IFail[] = []
+    fails.push(fail)
 
     expect(JSON.stringify(fail, null, 2)).toMatchInlineSnapshot(`
       "{
@@ -22,14 +22,14 @@ describe('jsonify', () => {
         \\"success\\": false,
         \\"value\\": null
       }"
-    `);
+    `)
 
-    const ok1 = okrs.jsonify(ok);
+    const ok1 = okrs.jsonify(ok)
     if (ok1.success) {
-      assert<Equals<typeof ok1, Ok<string>>>();
+      assert<Equals<typeof ok1, Ok<string>>>()
     }
     if (!ok1.success) {
-      assert<Equals<typeof ok1, Ok<string>>>();
+      assert<Equals<typeof ok1, Ok<string>>>()
     }
     expect(ok1).toMatchInlineSnapshot(`
       {
@@ -38,7 +38,7 @@ describe('jsonify', () => {
         "success": true,
         "value": "ok",
       }
-    `);
+    `)
     expect(okrs.jsonify(fail)).toMatchInlineSnapshot(`
       {
         "_kr": "fail",
@@ -61,6 +61,6 @@ describe('jsonify', () => {
         "success": false,
         "value": null,
       }
-    `);
-  });
-});
+    `)
+  })
+})
