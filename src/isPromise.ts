@@ -5,7 +5,7 @@
  * as suggested by https://stackoverflow.com/questions/27746304/how-do-i-tell-if-an-object-is-a-promise
  * as is plausible considering https://promisesaplus.com/#point-53
  */
-export function isPromiseLike(v: unknown): v is PromiseLike<unknown> {
+export function isPromise(v: unknown): v is Promise<unknown> {
   return (
     !!v &&
     (typeof v === "object" || typeof v === "function") &&

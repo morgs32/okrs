@@ -1,8 +1,8 @@
 import { Either, Fail, NotAPromise } from "./types"
 import { handle } from "./handle"
 import { okrs } from "."
-import { isPromise } from "util/types"
 import { isEither } from "./isEither"
+import { isPromise } from "./isPromise"
 
 export function coerce<T, R extends T extends Either ? T | Fail : Either<T>>(
   fn: () => Promise<T>,

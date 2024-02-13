@@ -1,9 +1,9 @@
 import { NotAPromise, NotAnEither } from "./types"
-import { isPromiseLike } from "./isPromiseLike"
+import { isPromise } from "./isPromise"
 import { okrs } from "."
 
 export function strict<T>(
-  fn: () => PromiseLike<NotAnEither<T>>,
+  fn: () => Promise<NotAnEither<T>>,
   extra?: Record<string, unknown>,
 ): Promise<T>
 export function strict<T>(
@@ -11,12 +11,12 @@ export function strict<T>(
   extra?: Record<string, unknown>,
 ): T
 export function strict<T>(
-  fn: () => NotAPromise<NotAnEither<T>> | PromiseLike<NotAnEither<T>>,
+  fn: () => NotAPromise<NotAnEither<T>> | Promise<NotAnEither<T>>,
   extra?: Record<string, unknown>,
 ): T | Promise<T> {
   try {
     const v = fn()
-    if (isPromiseLike(v)) {
+    if (isPromise(v)) {
       return v.then(
         (v) => Promise.resolve(v),
         (e) => {

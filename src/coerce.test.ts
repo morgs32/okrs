@@ -71,10 +71,6 @@ describe("coerce", () => {
     })
     assert<Equals<Either<number, "fail"> | Fail, typeof a>>()
 
-    expect(a).toMatchInlineSnapshot(`
-      [Error: fail {
-        "foo": "bar"
-      }]
-    `)
+    expect(a).toMatchInlineSnapshot(`[Error: fail]`)
   })
 })
