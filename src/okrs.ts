@@ -7,7 +7,6 @@ import { handle } from "./handle"
 import { all } from "./all"
 import { coerce } from "./coerce"
 import { strict } from "./strict"
-import { addExtra } from "./addExtra"
 import { promise } from "./promise"
 import { wrap } from "./wrap"
 import { jsonify } from "./jsonify"
@@ -18,7 +17,6 @@ export {
   fail,
   parse,
   strict,
-  addExtra,
   handle,
   all,
   props,

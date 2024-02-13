@@ -15,7 +15,11 @@ export type NotAnEither<R> = R extends Either<any> ? never : R
 
 export type Resolveable<R> = R | Promise<R>
 
-export type Either<R = any, L extends string = string> = Fail<L> | Ok<R>
+type DistributeFail<T extends string> = T extends string ? Fail<T> : never
+
+export type Either<R = any, L extends string = string> =
+  | Ok<R>
+  | DistributeFail<L>
 export type IJsonifyEither<T extends Either> =
   T extends Fail<infer L> ? IFail<L> : Ok<T["value"]>
 
