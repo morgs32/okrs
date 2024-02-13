@@ -10,7 +10,7 @@ export interface Ok<R = any> {
 }
 
 export type MaybeEither<T> = Either<T> | T
-export type NotAPromise<R> = R extends PromiseLike<any> ? never : R
+export type NotAPromise<R> = R extends Promise<any> ? never : R
 export type NotAnEither<R> = R extends Either<any> ? never : R
 
 export type Resolveable<R> = R | Promise<R>

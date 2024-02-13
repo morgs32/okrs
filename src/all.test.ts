@@ -5,7 +5,7 @@ describe("all", () => {
   it("works", async () => {
     await expect(() => {
       return all([Promise.resolve(1), Promise.reject(2)])
-    }).rejects.toThrowErrorMatchingInlineSnapshot('"2"')
+    }).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: 2]`)
 
     const result = await all([Promise.resolve(1), Promise.resolve(2)])
     expect(result).toMatchInlineSnapshot(`

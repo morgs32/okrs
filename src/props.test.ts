@@ -24,6 +24,6 @@ describe("props", () => {
 
     await expect(() => {
       return okrs.props(props)
-    }).rejects.toThrowErrorMatchingInlineSnapshot('"2"')
+    }).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: 2]`)
   })
 })

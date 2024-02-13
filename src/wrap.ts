@@ -1,12 +1,17 @@
 import { okrs } from "."
-import { Either } from "./types"
+import { Either, Fail } from "./types"
 
-export function wrap<F extends (...args: any[]) => any>(fn: F) {
+export function wrap<
+  F extends (...args: any[]) => any,
+  R extends ReturnType<F>,
+>(fn: F) {
   return function wrapped(
     ...args: Parameters<F>
-  ): ReturnType<F> extends Promise<infer A>
-    ? Promise<Either<A>>
-    : Either<ReturnType<F>> {
+  ): R extends Promise<infer A>
+    ? Promise<A extends Either ? A | Fail : Either<A>>
+    : R extends Either
+      ? R | Fail
+      : Either<R> {
     return okrs.coerce(() => fn(...args), ...args) as any
   }
 }

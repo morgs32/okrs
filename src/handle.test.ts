@@ -5,18 +5,18 @@ import { fail } from "./Fail"
 
 describe("handle", () => {
   it("works", async () => {
-    const a = handle(new Error("fail"), {
+    const a = handle(new Error("foobar"), {
       foo: "bar",
     })
     expect(a).toMatchInlineSnapshot(`
-      [Error: fail {
+      [Error: foobar {
         "foo": "bar"
       }]
     `)
   })
 
   it("with extra", async () => {
-    const f1 = fail("fail", {
+    const f1 = fail("foobar", {
       a: "a",
     })
     const f2 = handle(f1, {
@@ -24,7 +24,7 @@ describe("handle", () => {
     })
 
     expect(f2).toMatchInlineSnapshot(`
-      [Error: fail {
+      [Error: foobar {
         "a": "a"
       }]
     `)
@@ -46,17 +46,15 @@ describe("handle", () => {
     }
     expect(err).toMatchInlineSnapshot(
       `
-      [Error: x-lhc-workspace-key header is required {
-        "issues": [
-          {
-            "code": "invalid_type",
-            "expected": "string",
-            "received": "null",
-            "path": [],
-            "message": "x-lhc-workspace-key header is required"
-          }
-        ]
-      }]
+      [Error: [
+        {
+          "code": "invalid_type",
+          "expected": "string",
+          "received": "null",
+          "path": [],
+          "message": "x-lhc-workspace-key header is required"
+        }
+      ]]
     `,
     )
   })

@@ -1,6 +1,7 @@
 import { assert, Equals } from "tsafe"
 import { coerce } from "./coerce"
-import { Either } from "./types"
+import { Either, Fail } from "./types"
+import { okrs } from "."
 
 describe("coerce", () => {
   it("works", async () => {
@@ -53,6 +54,22 @@ describe("coerce", () => {
       },
     )
     assert<Equals<Either<number>, typeof a>>()
+
+    expect(a).toMatchInlineSnapshot(`
+      [Error: fail {
+        "foo": "bar"
+      }]
+    `)
+  })
+
+  it("with Eithers", async () => {
+    const a = coerce(() => {
+      if (process.env.NODE_ENV === "production") {
+        return okrs.ok(1)
+      }
+      return new Fail("fail")
+    })
+    assert<Equals<Either<number, "fail"> | Fail, typeof a>>()
 
     expect(a).toMatchInlineSnapshot(`
       [Error: fail {

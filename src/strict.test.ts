@@ -9,6 +9,6 @@ describe("strict", () => {
         return 1
       })
       assert<Equals<number, typeof b>>()
-    }).toThrowErrorMatchingInlineSnapshot('"foobar"')
+    }).toThrowErrorMatchingInlineSnapshot(`[Error: foobar]`)
   })
 })
