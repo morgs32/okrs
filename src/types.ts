@@ -20,7 +20,12 @@ type DistributeFail<T extends string> = T extends string ? Fail<T> : never
 export type Either<R = any, L extends string = string> =
   | Ok<R>
   | DistributeFail<L>
+
+export type IFailJson<L extends string = string> = IFail<L> & {
+  stack: never
+}
+
 export type IJsonifyEither<T extends Either> =
-  T extends Fail<infer L> ? IFail<L> : Ok<T["value"]>
+  T extends Fail<infer L> ? IFailJson<L> : Ok<T["value"]>
 
 export type EitherValue<T> = T extends Ok<infer R> ? R : never

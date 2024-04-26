@@ -9,13 +9,13 @@ export interface IExtra {
 }
 
 export interface IFail<L extends string = string> {
+  code: L
   success: false
   value: null
   _kr: "fail"
   extra: IExtra
   status: number
   feedback: string | null
-  code: L
 }
 
 export class Fail<L extends string = string>
